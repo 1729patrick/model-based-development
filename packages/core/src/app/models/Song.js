@@ -5,12 +5,18 @@ class Song extends Model {
     super('Song', song);
 
     this.id = song.id;
-    this.name = song.name;
-    this.album = song.album;
+		this.userIdEmail = song.userIdEmail;
+		this.password = song.password;
+		this.rememberMe = song.rememberMe;
   }
 
   JSON() {
-    return { id: this.id, name: this.name, album: this.album };
+    return {
+      id: this.id,
+			userIdEmail: this.userIdEmail,
+			password: this.password,
+			rememberMe: this.rememberMe,
+    };
   }
 }
 

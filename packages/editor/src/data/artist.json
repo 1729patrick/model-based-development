@@ -1,0 +1,23 @@
+{
+  "schema": {
+    "type": "object",
+    "title": "Artist",
+    "properties": {
+      "name": {
+        "type": "string",
+        "minLength": 3
+      },
+      "date_of_birth": {
+        "type": "date"
+      },
+      "nacionality": {
+        "type": "integer"
+      },
+      "description": {
+        "type": "string"
+      }
+    },
+    "required": ["name", "date_of_birth", "nacionality", "description"]
+  },
+  "form": ["*"]
+}

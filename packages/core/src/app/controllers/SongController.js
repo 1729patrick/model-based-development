@@ -31,7 +31,7 @@ class SongController {
 
   async findOne(req, res) {
     const { songId } = req.params;
-    const song = await new Song().findBy({ id: songId });
+    const song = (await new Song().findBy({ id: songId }))[0];
 
     return res.json(song);
   }

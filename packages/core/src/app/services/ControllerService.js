@@ -6,37 +6,56 @@ import { resolve } from 'path';
 class ModelService {
   async run({ args }) {
     const model = Mustache.render(
-      `import Model from '../../libraries/Model';
+      `import {{name}} from '../models/{{name}}';
 
-class {{name}} extends Model {
-  constructor({{model}} = {}) {
-    super('{{name}}', {{model}});
+class {{name}}Controller {
+  async index(_, res) {
+    const {{model}}s = await new {{name}}().findAll();
 
-    this.id = {{model}}.id;${this.getPropertiesContructor(args)}
+    return res.json({{model}}s);
   }
 
-  JSON() {
-    return {
-      id: this.id,${this.getPropertiesJSON(args)}
-    };
+  async store(req, res) {
+    const {{model}} = await new {{name}}(req.body).insert();
+
+    return res.json({{model}});
+  }
+
+  async update(req, res) {
+    const { {{model}}Id } = req.params;
+
+    const {{model}} = await new {{name}}().update({ id: {{model}}Id }, req.body);
+
+    return res.json({{model}});
+  }
+
+  async delete(req, res) {
+    const { {{model}}Id } = req.params;
+
+    await new {{name}}().delete({ id: {{model}}Id });
+
+    return res.send();
+  }
+
+  async findOne(req, res) {
+    const { {{model}}Id } = req.params;
+    const {{model}} = (await new {{name}}().findBy({ id: {{model}}Id }))[0];
+
+    return res.json({{model}});
   }
 }
 
-export default {{name}};`,
+export default new {{name}}Controller();`,
       args
     );
 
     fs.writeFile(
-      resolve('src', 'app', 'models', `${args.name}1.js`),
+      resolve('src', 'app', 'controllers', `${args.name}Controller.js`),
       model,
       () => {}
     );
 
-    // await database.schema.createTable(name, function(t) {
-    //   t.increments('id').primary();
-    //   t.string('name', 100);
-    //   t.string('album', 100);
-    // });
+    return model;
   }
 
   getPropertiesContructor({ properties, model }) {

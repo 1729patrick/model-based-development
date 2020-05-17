@@ -1,0 +1,14 @@
+{
+  "schema": {
+    "type": "object",
+    "title": "Genre",
+    "properties": {
+      "name": {
+        "type": "string",
+        "minLength": 3
+      }
+    },
+    "required": ["name"]
+  },
+  "form": ["*"]
+}

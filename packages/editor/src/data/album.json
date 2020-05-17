@@ -1,0 +1,17 @@
+{
+  "schema": {
+    "type": "object",
+    "title": "Album",
+    "properties": {
+      "name": {
+        "type": "string",
+        "minLength": 3
+      },
+      "released": {
+        "type": "date"
+      }
+    },
+    "required": ["name", "released"]
+  },
+  "form": ["*"]
+}
