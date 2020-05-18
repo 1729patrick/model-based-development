@@ -15,6 +15,7 @@ import jsonWorkerUrl from 'file-loader!ace-builds/src-noconflict/worker-json';
 import Localizer from './data/tests/localizer';
 import SelectLabel from './data/selectlabel';
 import ErrorBoundary from './components/ErrorBoundary';
+import api from './services/api';
 
 ace.config.setModuleUrl('ace/mode/json_worker', jsonWorkerUrl);
 
@@ -128,6 +129,11 @@ class App extends React.Component {
     }
   };
 
+  createModel = () => {
+    console.log('aaaa');
+    api.post('generators', this.state.schema);
+  };
+
   render() {
     const {
       schema,
@@ -235,6 +241,7 @@ class App extends React.Component {
               variant="contained"
               color="primary"
               style={{ marginTop: 'auto', width: '100%' }}
+              onClick={this.createModel}
             >
               CREATE MODEL
             </Button>
