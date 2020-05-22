@@ -1,44 +1,50 @@
 {
-  "name": "json-schema-editor",
-  "version": "1.0.0",
-  "description": "For development, everytime you run `npm start`, a file named form.entry.js will be generated based on the latest code.",
-  "main": "index.js",
+  "name": "editor",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.7.4",
-    "@material-ui/core": "4.7.0",
+    "@material-ui/core": "^4.9.14",
     "@material-ui/icons": "4.5.1",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
     "babel-eslint": "10.0.3",
     "babel-preset-react": "^6.24.1",
     "eslint": "6.7.1",
     "install": "^0.13.0",
     "lodash": "^4.17.15",
-    "react": "16.12.0",
+    "react": "^16.13.1",
     "react-ace": "8.0.0",
-    "react-dom": "16.12.0",
+    "react-dom": "^16.13.1",
     "react-schema-form": "^0.8.7",
     "react-schema-form-rc-select": "^0.3.9",
+    "react-scripts": "3.4.1",
     "react-select": "^3.0.8",
+    "react-toastify": "^6.0.5",
     "supports-color": "^7.1.0",
     "webpack-cli": "3.3.10"
   },
-  "devDependencies": {
-    "@babel/cli": "^7.7.4",
-    "@babel/core": "^7.7.4",
-    "@babel/preset-react": "^7.9.4",
-    "@babel/runtime": "^7.7.4",
-    "@webpack-cli/migrate": "0.1.9",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-loader": "^8.0.6",
-    "babel-preset-env": "1.7.0",
-    "file-loader": "^5.0.2",
-    "webpack": "4.41.2",
-    "webpack-dev-server": "3.9.0"
-  },
   "scripts": {
-    "start": "webpack-dev-server -d --config webpack.config.js"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
