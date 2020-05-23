@@ -3,7 +3,7 @@ class DatabaseService {
   async run({ args }) {
     const types = {
       string: 'string',
-      date: 'timestamps',
+      date: 'datetime',
       integer: 'integer',
       boolean: 'boolean',
     };
@@ -22,7 +22,7 @@ class DatabaseService {
         column[isNullable]();
       });
 
-      args.references.forEach(async ({ model, relation }) => {
+      (args.references || []).forEach(async ({ model, relation }) => {
         const tableName = `${model.toLowerCase()}_id`;
 
         if (relation === 'M-M') {
@@ -65,6 +65,12 @@ class DatabaseService {
           .references('id')
           .inTable(model);
       });
+
+      table
+        .timestamp('created_at', { useTz: true })
+        .notNullable()
+        .defaultTo(database.fn.now());
+      table.timestamp('updated_at');
     });
 
     return table;
