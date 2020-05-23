@@ -2,6 +2,7 @@ import Mustache from 'mustache';
 
 import fs from 'fs';
 import { resolve } from 'path';
+import { CONTROLLER_PATH } from '../../config/path';
 
 class ModelService {
   async run({ args }) {
@@ -49,10 +50,9 @@ export default new {{name}}Controller();`,
       args
     );
 
-    fs.writeFile(
-      resolve('src', 'app', 'controllers', `${args.name}Controller.js`),
-      model,
-      () => {}
+    fs.writeFileSync(
+      resolve(CONTROLLER_PATH, `${args.name}Controller.js`),
+      model
     );
 
     return model;

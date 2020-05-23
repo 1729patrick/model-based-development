@@ -2,6 +2,7 @@ import Mustache from 'mustache';
 
 import fs from 'fs';
 import { resolve } from 'path';
+import { ROUTER_PATH } from '../../config/path';
 
 class RouterService {
   async run({ args }) {
@@ -22,10 +23,9 @@ export default router;`,
       args
     );
 
-    fs.writeFile(
+    fs.writeFileSync(
       resolve('src', 'routes', 'app', `${args.model}.routes.js`),
-      model,
-      () => {}
+      model
     );
 
     this.addRoutesInIndex(args);
@@ -34,10 +34,7 @@ export default router;`,
   }
 
   addRoutesInIndex({ name, model }) {
-    const appRoutes = fs.readFileSync(
-      resolve('src', 'routes', 'app', 'index.js'),
-      'utf8'
-    );
+    const appRoutes = fs.readFileSync(resolve(ROUTER_PATH, 'index.js'), 'utf8');
 
     const appRoutesWithImport = `import ${name}Routes from './${model}.routes';
 ${appRoutes}`;
@@ -53,8 +50,8 @@ ${appRoutes}`;
 ];`
     );
 
-    fs.writeFile(
-      resolve('src', 'routes', 'app', `index.js`),
+    fs.writeFileSync(
+      resolve(ROUTER_PATH, 'index.js'),
       appRoutesWithExport,
       () => {}
     );

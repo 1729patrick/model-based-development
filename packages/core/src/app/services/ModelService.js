@@ -2,6 +2,7 @@ import Mustache from 'mustache';
 
 import fs from 'fs';
 import { resolve } from 'path';
+import { MODEL_PATH } from '../../config/path';
 
 class ModelService {
   async run({ args }) {
@@ -26,11 +27,7 @@ export default {{name}};`,
       args
     );
 
-    fs.writeFile(
-      resolve('src', 'app', 'models', `${args.name}.js`),
-      model,
-      () => {}
-    );
+    fs.writeFileSync(resolve(MODEL_PATH, `${args.name}.js`), model);
 
     return model;
   }
