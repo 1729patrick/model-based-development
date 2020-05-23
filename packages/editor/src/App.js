@@ -30,9 +30,9 @@ class App extends React.Component {
   state = {
     tests: [
       { label: 'Album', value: require('./data/album.json') },
-      { label: 'Song', value: require('./data/song.json') },
       { label: 'Artist', value: require('./data/artist.json') },
       { label: 'Genre', value: require('./data/genre.json') },
+      { label: 'Song', value: require('./data/song.json') },
     ],
     schema: {},
     form: [],
