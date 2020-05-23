@@ -18,8 +18,8 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   children: {
-    padding: 50,
-    marginTop: 60,
+    padding: '110px 50px 50px',
+    height: '100vh',
   },
 }));
 
