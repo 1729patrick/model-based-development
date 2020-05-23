@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "title": "Song",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 3
+    }
+  },
+  "required": ["name"],
+  "references": [
+    {
+      "model": "Album",
+      "relation": "M-1"
+    },
+    {
+      "model": "Genre",
+      "relation": "M-M"
+    },
+    {
+      "model": "Artist",
+      "relation": "M-M"
+    }
+  ]
+}
