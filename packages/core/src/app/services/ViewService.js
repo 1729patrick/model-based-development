@@ -30,8 +30,6 @@ const {{name}}s = () => {
     const fetch{{name}}s = async () => {
       const { data } = await api.get('/{{model}}s');
 
-      if (!data.length) return;
-
       set{{name}}s({ columns: getColumns(data.columns), data: data.{{model}}s });
     };
 
@@ -92,7 +90,7 @@ const {{name}}s = () => {
 
   return (
     <MaterialTable
-      title="{{name}}"
+      title="{{name}}s"
       columns={columns}
       data={data}
       editable={editable}

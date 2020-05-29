@@ -14,7 +14,7 @@ class {{name}}Controller {
     const {{model}} = new {{name}}();
 
     const {{model}}s = await {{model}}.findAll();
-    const columns = Object.keys({{model}});
+    const columns = Object.keys({{model}}.toJSON());
 
     return res.json({ columns, {{model}}s });
   }

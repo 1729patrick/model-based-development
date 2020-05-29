@@ -16,7 +16,7 @@ class {{name}} extends Model {
     this.id = {{model}}.id;${this.getPropertiesContructor(args)}
   }
 
-  JSON() {
+  toJSON() {
     return {
       id: this.id,${this.getPropertiesJSON(args)}
     };
