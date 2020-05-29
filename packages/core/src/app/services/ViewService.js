@@ -17,10 +17,8 @@ import { toastSuccess, toastError } from '../../services/toast';
 const {{name}}s = () => {
   const [{{model}}s, set{{name}}s] = useState({});
 
-  const getColumns = data => {
-    const [firstRow] = data;
-
-    return Object.entries(firstRow).map(([field]) => {
+  const getColumns = columns => {
+    return columns.map((field) => {
       const title = field.replace('_', '');
       const editable = field === 'id' ? 'never' : 'always';
 
@@ -34,7 +32,7 @@ const {{name}}s = () => {
 
       if (!data.length) return;
 
-      set{{name}}s({ columns: getColumns(data), data });
+      set{{name}}s({ columns: getColumns(data.columns), data: data.{{model}}s });
     };
 
     fetch{{name}}s();

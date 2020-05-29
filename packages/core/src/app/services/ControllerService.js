@@ -11,9 +11,12 @@ class ModelService {
 
 class {{name}}Controller {
   async index(_, res) {
-    const {{model}}s = await new {{name}}().findAll();
+    const {{model}} = new {{name}}();
 
-    return res.json({{model}}s);
+    const {{model}}s = await song.findAll();
+    const columns = Object.keys({{model}});
+
+    return res.json({ columns, {{model}}s });
   }
 
   async store(req, res) {
