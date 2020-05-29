@@ -26,3 +26,4 @@ yarn-lock.json
 yarn.lock
 
 .env
+packages/core/.env
