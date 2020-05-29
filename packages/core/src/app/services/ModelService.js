@@ -32,19 +32,31 @@ export default {{name}};`,
     return model;
   }
 
-  getPropertiesContructor({ properties, model }) {
+  getPropertiesContructor({ properties, references, model }) {
     let propertiesFormatted = ``;
     for (const property in properties) {
       propertiesFormatted += `\n\t\tthis.${property} = ${model}.${property};`;
     }
 
+    for (const reference of references) {
+      const tableName = `${reference.model.toLowerCase()}_id`;
+
+      propertiesFormatted += `\n\t\tthis.${tableName} = ${model}.${tableName};`;
+    }
+
     return propertiesFormatted;
   }
 
-  getPropertiesJSON({ properties }) {
+  getPropertiesJSON({ properties, references }) {
     let propertiesFormatted = ``;
     for (const property in properties) {
       propertiesFormatted += `\n\t\t\t${property}: this.${property},`;
+    }
+
+    for (const reference of references) {
+      const tableName = `${reference.model.toLowerCase()}_id`;
+
+      propertiesFormatted += `\n\t\t\t${tableName}: this.${tableName},`;
     }
 
     return propertiesFormatted;
