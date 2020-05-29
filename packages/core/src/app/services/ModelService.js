@@ -32,7 +32,7 @@ export default {{name}};`,
     return model;
   }
 
-  getPropertiesContructor({ properties, references, model }) {
+  getPropertiesContructor({ properties, references = [], model }) {
     let propertiesFormatted = ``;
     for (const property in properties) {
       propertiesFormatted += `\n\t\tthis.${property} = ${model}.${property};`;
@@ -47,7 +47,7 @@ export default {{name}};`,
     return propertiesFormatted;
   }
 
-  getPropertiesJSON({ properties, references }) {
+  getPropertiesJSON({ properties, references = [] }) {
     let propertiesFormatted = ``;
     for (const property in properties) {
       propertiesFormatted += `\n\t\t\t${property}: this.${property},`;
