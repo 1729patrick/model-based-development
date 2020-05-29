@@ -13,7 +13,7 @@ class {{name}}Controller {
   async index(_, res) {
     const {{model}} = new {{name}}();
 
-    const {{model}}s = await song.findAll();
+    const {{model}}s = await {{model}}.findAll();
     const columns = Object.keys({{model}});
 
     return res.json({ columns, {{model}}s });
