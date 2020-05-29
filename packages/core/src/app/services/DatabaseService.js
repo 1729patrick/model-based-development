@@ -34,12 +34,16 @@ class DatabaseService {
             table
               .integer(tableName)
               .unsigned()
-              .notNullable();
+              .notNullable()
+              .onUpdate('CASCADE')
+              .onDelete('CASCADE');
 
             table
               .integer(tableName1)
               .unsigned()
-              .notNullable();
+              .notNullable()
+              .onUpdate('CASCADE')
+              .onDelete('CASCADE');
 
             table
               .foreign(tableName)
@@ -58,7 +62,9 @@ class DatabaseService {
         table
           .integer(tableName)
           .unsigned()
-          .notNullable();
+          .notNullable()
+          .onUpdate('CASCADE')
+          .onDelete('CASCADE');
 
         table
           .foreign(tableName)
