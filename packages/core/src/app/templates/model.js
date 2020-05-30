@@ -60,17 +60,19 @@ const getFindAllRelations = ({ references, name, model }) => {
   }
 
   let fns = '';
-  references.forEach(({ model, relation }) => {
+  references.forEach(({ model: modelRef, relation }) => {
     if (relation === 'M-M') {
-      fns += `\n.leftJoin('${name}${model}', '${name}.id', '${name}${model}.${model}_id')`;
+      fns += `\n\t\t\t\t.leftJoin('${name}${modelRef}', '${name}.id', '${name}${modelRef}.${model}_id')`;
     }
   });
 
-  return `findAll() {
+  return `
+  findAll() {
     let join = (database, tableName) =>
       database
         .select()
         .from(tableName)${fns};
 
-    return super.findAll(join);\n`;
+    return super.findAll(join);
+  }\n`;
 };
