@@ -19,7 +19,7 @@ const {{name}}s = () => {
 
   const getColumns = columns => {
     return columns.map((field) => {
-      const title = field.replace('_', '');
+      const title = field.replace(/_/g, ' ');
       const editable = field === 'id' ? 'never' : 'always';
 
       return { field, title, editable };
@@ -145,23 +145,18 @@ export default {{name}}s;
   }
 
   addRouteInRouter({ name, model }) {
-    const linksPath = resolve(VIEW_PATH, 'routes', 'Router.js');
+    const linksPath = resolve(VIEW_PATH, 'routes', 'index.js');
     const links = fs.readFileSync(linksPath, 'utf8');
 
-    const appRoutesWithImport = `import ${name}s from '../pages/${name}s';\n${links}`;
-
-    const appRouterIndented = appRoutesWithImport.replace(
-      '<></>',
-      `(
-    <>
-    </>
-  )`
+    const appRoutesWithImport = links.replace(
+      "import Home from '../pages/Home';",
+      `import ${name}s from '../pages/${name}s';\nimport Home from '../pages/Home';`
     );
 
-    const appRoutesWithExport = appRouterIndented.replace(
-      '</>',
+    const appRoutesWithExport = appRoutesWithImport.replace(
+      '</Switch>',
       `  <Route exact path="/${model}s" component={${name}s}></Route>
-    </>`
+      </Switch>`
     );
 
     fs.writeFileSync(linksPath, appRoutesWithExport, () => {});

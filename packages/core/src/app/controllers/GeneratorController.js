@@ -26,10 +26,10 @@ class GeneratorController {
     }
 
     const [model, controller, router, table, view] = await Promise.all([
-      DatabaseService.run({ args }),
-      ModelService.run({ args }),
-      ControllerService.run({ args }),
-      RouterService.run({ args }),
+      // DatabaseService.run({ args }),
+      // ModelService.run({ args }),
+      // ControllerService.run({ args }),
+      // RouterService.run({ args }),
       ViewService.run({ args }),
     ]);
 

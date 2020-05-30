@@ -5,9 +5,9 @@ import { NavLink } from 'react-router-dom';
 const styles = {
   navLink: {
     color: '#fff',
+    textDecoration: 'none',
     '&:hover': {
       color: '#fff',
-      textDecoration: 'none',
       textTranform: 'capilatize',
     },
   },
