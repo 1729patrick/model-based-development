@@ -11,7 +11,7 @@
         "type": "date"
       },
       "nacionality": {
-        "type": "integer"
+        "type": "string"
       },
       "description": {
         "type": "string"
