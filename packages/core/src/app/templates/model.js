@@ -12,7 +12,7 @@ class {{name}} extends Model {
       { field: 'id', type: 'numeric' },${getPropertiesColumns(args)}
     ];
   }
-}
+${getFindAllRelations(args)}}
 
 export default {{name}};`;
 
@@ -52,4 +52,25 @@ const getPropertiesColumns = ({ properties, references = [] }) => {
   }
 
   return propertiesFormatted;
+};
+
+const getFindAllRelations = ({ references, name, model }) => {
+  if (!references) {
+    return '';
+  }
+
+  let fns = '';
+  references.forEach(({ model, relation }) => {
+    if (relation === 'M-M') {
+      fns += `\n.leftJoin('${name}${model}', '${name}.id', '${name}${model}.${model}_id')`;
+    }
+  });
+
+  return `findAll() {
+    let join = (database, tableName) =>
+      database
+        .select()
+        .from(tableName)${fns};
+
+    return super.findAll(join);\n`;
 };

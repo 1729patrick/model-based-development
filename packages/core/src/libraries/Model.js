@@ -78,7 +78,11 @@ class Model {
       .from(this.tableName);
   }
 
-  async findAll() {
+  async findAll(join) {
+    if (typeof join === 'function') {
+      return join(database, this.tableName);
+    }
+
     return database.select().from(this.tableName);
   }
 }
