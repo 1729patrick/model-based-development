@@ -60,9 +60,11 @@ const getFindAllRelations = ({ references, name, model }) => {
   }
 
   let fns = '';
+  let projection = `['${name}.*'`;
   references.forEach(({ model: modelRef, relation }) => {
     if (relation === 'M-M') {
       fns += `\n\t\t\t\t.leftJoin('${name}${modelRef}', '${name}.id', '${name}${modelRef}.${model}_id')`;
+      projection += `, '${name}${modelRef}.${modelRef.toLowerCase()}_id'`;
     }
   });
 
@@ -70,7 +72,7 @@ const getFindAllRelations = ({ references, name, model }) => {
   findAll() {
     let join = (database, tableName) =>
       database
-        .select()
+        .select(${projection}])
         .from(tableName)${fns};
 
     return super.findAll(join);
