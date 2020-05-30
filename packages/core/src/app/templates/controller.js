@@ -11,29 +11,41 @@ class {{name}}Controller {
   }
 
   async store(req, res) {
-    if (!Object.keys(req.body).length) {
-      return res.status(400).json({ error: 'Invalid parameters' });
+    try {
+      if (!Object.keys(req.body).length) {
+        return res.status(400).json({ error: 'Invalid parameters' });
+      }
+
+      const {{model}} = await new {{name}}(req.body).insert();
+
+      return res.json({{model}});
+    } catch ({ message }) {
+      return res.status(400).json({ error: message });
     }
-
-    const {{model}} = await new {{name}}(req.body).insert();
-
-    return res.json({{model}});
   }
 
   async update(req, res) {
-    const { {{model}}Id } = req.params;
+    try
+      const { {{model}}Id } = req.params;
 
-    const {{model}} = await new {{name}}().update({ id: {{model}}Id }, req.body);
+      const {{model}} = await new {{name}}().update({ id: {{model}}Id }, req.body);
 
-    return res.json({{model}});
+      return res.json({{model}});
+    } catch ({ message }) {
+      return res.status(400).json({ error: message });
+    }
   }
 
   async delete(req, res) {
-    const { {{model}}Id } = req.params;
+    try {
+      const { {{model}}Id } = req.params;
 
-    await new {{name}}().delete({ id: {{model}}Id });
+      await new {{name}}().delete({ id: {{model}}Id });
 
-    return res.send();
+      return res.send();
+    } catch ({ message }) {
+      return res.status(400).json({ error: message });
+    }
   }
 
   async findOne(req, res) {
