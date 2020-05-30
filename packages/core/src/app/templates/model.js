@@ -42,13 +42,13 @@ const getPropertiesColumns = ({ properties, references = [] }) => {
   for (const property in properties) {
     const type = properties[property].type;
 
-    propertiesFormatted += `\n\t\t\t{ field: ${property}, type: ${types[type]} },`;
+    propertiesFormatted += `\n\t\t\t{ field: '${property}', type: '${types[type]}' },`;
   }
 
   for (const reference of references) {
     const tableName = `${reference.model.toLowerCase()}_id`;
 
-    propertiesFormatted += `\n\t\t\t{ field: ${tableName}, type: 'numeric' },`;
+    propertiesFormatted += `\n\t\t\t{ field: '${tableName}', type: 'numeric' },`;
   }
 
   return propertiesFormatted;
