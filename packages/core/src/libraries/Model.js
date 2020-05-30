@@ -47,7 +47,7 @@ class Model {
       });
     });
 
-    return true;
+    return [tableInsertedId];
   }
 
   delete(condition) {

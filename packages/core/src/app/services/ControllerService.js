@@ -20,6 +20,10 @@ class {{name}}Controller {
   }
 
   async store(req, res) {
+    if (!Object.keys(req.body).length) {
+      return res.status(400).json({ error: 'Invalid parameters' });
+    }
+
     const {{model}} = await new {{name}}(req.body).insert();
 
     return res.json({{model}});
