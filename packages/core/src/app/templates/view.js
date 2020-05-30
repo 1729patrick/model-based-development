@@ -8,11 +8,11 @@ const {{name}}s = () => {
   const [{{model}}s, set{{name}}s] = useState({});
 
   const getColumns = columns => {
-    return columns.map((field) => {
+    return columns.map(({ field, type }) => {
       const title = field.replace(/_/g, ' ');
       const editable = field === 'id' ? 'never' : 'always';
 
-      return { field, title, editable };
+      return { field, title, editable, type };
     });
   };
 

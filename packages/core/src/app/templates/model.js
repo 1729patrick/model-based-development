@@ -7,10 +7,10 @@ class {{name}} extends Model {
     this.id = {{model}}.id;${getPropertiesContructor(args)}
   }
 
-  toJSON() {
-    return {
-      id: this.id,${getPropertiesJSON(args)}
-    };
+  get columns() {
+    return [
+      { field: 'id', type: 'numeric' },${getPropertiesColumns(args)}
+    ];
   }
 }
 
@@ -31,16 +31,24 @@ const getPropertiesContructor = ({ properties, references = [], model }) => {
   return propertiesFormatted;
 };
 
-const getPropertiesJSON = ({ properties, references = [] }) => {
+const getPropertiesColumns = ({ properties, references = [] }) => {
+  const types = {
+    string: 'string',
+    date: 'date',
+    integer: 'numeric',
+  };
+
   let propertiesFormatted = ``;
   for (const property in properties) {
-    propertiesFormatted += `\n\t\t\t${property}: this.${property},`;
+    const type = properties[property].type;
+
+    propertiesFormatted += `\n\t\t\t{ field: ${property}, type: ${types[type]} },`;
   }
 
   for (const reference of references) {
     const tableName = `${reference.model.toLowerCase()}_id`;
 
-    propertiesFormatted += `\n\t\t\t${tableName}: this.${tableName},`;
+    propertiesFormatted += `\n\t\t\t{ field: ${tableName}, type: 'numeric' },`;
   }
 
   return propertiesFormatted;

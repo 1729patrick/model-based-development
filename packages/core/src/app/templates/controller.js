@@ -5,7 +5,7 @@ class {{name}}Controller {
     const {{model}} = new {{name}}();
 
     const {{model}}s = await {{model}}.findAll();
-    const columns = Object.keys({{model}}.toJSON());
+    const columns = {{model}}.columns;
 
     return res.json({ columns, {{model}}s });
   }
