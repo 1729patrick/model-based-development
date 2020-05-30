@@ -25,7 +25,7 @@ class {{name}}Controller {
   }
 
   async update(req, res) {
-    try
+    try {
       const { {{model}}Id } = req.params;
 
       const {{model}} = await new {{name}}().update({ id: {{model}}Id }, req.body);
