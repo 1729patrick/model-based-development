@@ -7,7 +7,7 @@
     "packages:install": "cd packages/core && npm install && cd ../editor && npm install && cd ../front &&  npm install && cd ../../",
     "start:core": "cd packages/core && npm start",
     "start:editor": "cd packages/editor && npm start",
-    "start:front": "packages/front && npm start"
+    "start:front": "cd packages/front && npm start"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
