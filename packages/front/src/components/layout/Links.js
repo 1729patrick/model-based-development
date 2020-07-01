@@ -18,36 +18,5 @@ const styles = {
 };
 
 export default () => {
-  return (
-    <>
-      <NavLink
-        to="/albums"
-        style={styles.navLink}
-        activeStyle={styles.navLinkActive}
-      >
-        <Button color="inherit">Albums</Button>
-      </NavLink>
-      <NavLink
-        to="/artists"
-        style={styles.navLink}
-        activeStyle={styles.navLinkActive}
-      >
-        <Button color="inherit">Artists</Button>
-      </NavLink>
-      <NavLink
-        to="/genres"
-        style={styles.navLink}
-        activeStyle={styles.navLinkActive}
-      >
-        <Button color="inherit">Genres</Button>
-      </NavLink>
-      <NavLink
-        to="/songs"
-        style={styles.navLink}
-        activeStyle={styles.navLinkActive}
-      >
-        <Button color="inherit">Songs</Button>
-      </NavLink>
-    </>
-  );
+  return <></>;
 };

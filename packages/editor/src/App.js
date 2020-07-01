@@ -10,7 +10,6 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  Drawer,
 } from '@material-ui/core';
 import ErrorBoundary from './components/ErrorBoundary';
 import api from './services/api';
@@ -34,7 +33,6 @@ class App extends React.Component {
       { label: 'Artist', value: require('./data/artist.json') },
       { label: 'Genre', value: require('./data/genre.json') },
       { label: 'Song', value: require('./data/song.json') },
-      { label: 'New model', value: {} },
     ],
     schema: {},
     form: [],
@@ -42,10 +40,7 @@ class App extends React.Component {
     schemaJson: '',
     selected: '',
     localization: undefined,
-    showErrors: true,
-    error: false,
-    showExample: false,
-    anchor: null,
+    showErrors: false,
   };
 
   setStateDefault = () => this.setState({ model: this.tempModel });
@@ -70,31 +65,11 @@ class App extends React.Component {
     this.setState({ model: newModel });
   };
 
-  onValidate = () => {
-    try {
-      const schema = JSON.parse(this.state.schemaJson);
+  onValidate = () => {};
 
-      if (!schema.schema.type) {
-        return toastError('Attribute "schema.type" not found. 🥺');
-      }
+  onFormChange = val => {};
 
-      if (!schema.schema.title) {
-        return toastError('Attribute "schema.title" not found. 🥺');
-      }
-
-      if (!schema.schema.properties) {
-        return toastError('Attribute "schema.properties" not found. 🥺');
-      }
-
-      this.createModel();
-    } catch (e) {
-      toastError('Attribute "schema" not found. 🥺');
-    }
-  };
-
-  onFormChange = (val) => {};
-
-  onSchemaChange = (val) => {
+  onSchemaChange = val => {
     try {
       const schema = JSON.parse(val);
       this.setState({ schemaJson: val, schema });
@@ -113,10 +88,6 @@ class App extends React.Component {
     }
   };
 
-  toggleExample = () => {
-    this.setState({ showExample: !this.state.showExample });
-  };
-
   render() {
     const {
       schema,
@@ -127,12 +98,10 @@ class App extends React.Component {
       schemaJson,
       localization,
       showErrors,
-
-      showExample,
     } = this.state;
 
     let schemaForm = '';
-    if (form?.length > 0) {
+    if (form.length > 0) {
       schemaForm = (
         <ErrorBoundary>
           <SchemaForm
@@ -149,17 +118,7 @@ class App extends React.Component {
 
     return (
       <div className="col-md-12">
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <h1>JSON Schema Editor</h1>
-          <Button
-            variant="contained"
-            color={showExample ? 'secondary' : 'primary'}
-            style={{ marginTop: 10, marginLeft: 'auto' }}
-            onClick={this.toggleExample}
-          >
-            {showExample ? 'HIDE EXAMPLE' : 'SHOW EXAMPLE'}
-          </Button>
-        </div>
+        <h1>JSON Schema Editor</h1>
         <div className="row">
           <div className="col-sm-9">
             <h3>Schema</h3>
@@ -218,27 +177,12 @@ class App extends React.Component {
               variant="contained"
               color="primary"
               style={{ marginTop: 'auto', width: '100%', marginBottom: 20 }}
-              onClick={this.onValidate}
+              onClick={this.createModel}
             >
               CREATE MODEL
             </Button>
           </div>
         </div>
-        <React.Fragment>
-          <Drawer anchor="bottom" open={showExample} variant="persistent">
-            <AceEditor
-              mode="json"
-              theme="dracula"
-              height={window.innerHeight / 2.5}
-              width="100%"
-              readOnly={true}
-              style={{ flexGrow: 1, width: window.innerWidth }}
-              name="aceSchema"
-              value={JSON.stringify(require('./data/song.json'), undefined, 2)}
-              editorProps={{ $blockScrolling: true }}
-            />
-          </Drawer>
-        </React.Fragment>
       </div>
     );
   }
