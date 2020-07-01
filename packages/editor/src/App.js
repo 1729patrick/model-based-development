@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { utils, SchemaForm } from 'react-schema-form';
 import 'ace-builds';
 import AceEditor from 'react-ace';
@@ -17,6 +17,7 @@ import api from './services/api';
 import { toastSuccess, toastError } from './services/toast';
 
 export default () => {
+  const [error, setError] = useState(false);
   const [state, setState] = useState({
     tests: [
       { label: 'Album', value: require('./data/album.json') },
@@ -40,12 +41,13 @@ export default () => {
     anchor: null,
   });
 
-  const setStateDefault = () => setState({ model: tempModel });
+  // const setStateDefault = () => setState({...state,  model: tempModel });
 
   const onSelectChange = ({ target: { value } }) => {
     const { form, schema, model } = value;
 
     setState({
+      ...state,
       schemaJson: JSON.stringify(schema, undefined, 2),
       selected: value,
       schema,
@@ -59,13 +61,11 @@ export default () => {
     const { model } = state;
     const newModel = model;
     utils.selectOrSet(key, newModel, val, type);
-    setState({ model: newModel });
+    setState({ ...state, model: newModel });
   };
 
-  const onValidate = (schemaJson) => {
+  const onValidate = () => {
     try {
-      console.log('params');
-      return;
       const schema = JSON.parse(state.schemaJson);
 
       if (!schema.type) {
@@ -82,7 +82,6 @@ export default () => {
 
       createModel();
     } catch (e) {
-      console.log('error', e);
       toastError('Invalid Schema 🥺');
     }
   };
@@ -92,9 +91,10 @@ export default () => {
   const onSchemaChange = (val) => {
     try {
       const schema = JSON.parse(val);
-      if (schema.schema) setState({ schemaJson: val, schema });
+      setState({ ...state, schemaJson: val, schema });
+      setError(false);
     } catch (e) {
-      console.log('erro', val);
+      setError(true);
     }
   };
 
@@ -109,9 +109,7 @@ export default () => {
   };
 
   const toggleExample = () => {
-    setState({
-      showExample: !state.showExample,
-    });
+    setState({ ...state, showExample: !state.showExample });
   };
 
   const {
@@ -212,14 +210,11 @@ export default () => {
 
           <Button
             variant="contained"
-            color="primary"
+            color={error ? 'secondary' : 'primary'}
             style={{ marginTop: 'auto', width: '100%', marginBottom: 20 }}
-            onClick={() => {
-              console.log('xxxa', schemaJson);
-              // onValidate(schemaJson);
-            }}
+            onClick={onValidate}
           >
-            CREATE MODEL
+            {error ? 'SCHEMA INVALID' : 'CREATE MODE'}
           </Button>
         </div>
       </div>
