@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { utils, SchemaForm } from 'react-schema-form';
 import 'ace-builds';
 import AceEditor from 'react-ace';
@@ -16,25 +16,17 @@ import ErrorBoundary from './components/ErrorBoundary';
 import api from './services/api';
 import { toastSuccess, toastError } from './services/toast';
 
-class App extends React.Component {
-  tempModel = {
-    comments: [
-      {
-        name: '1',
-      },
-      {
-        name: '2',
-      },
-    ],
-  };
-
-  state = {
+export default () => {
+  const [state, setState] = useState({
     tests: [
       { label: 'Album', value: require('./data/album.json') },
       { label: 'Artist', value: require('./data/artist.json') },
       { label: 'Genre', value: require('./data/genre.json') },
       { label: 'Song', value: require('./data/song.json') },
-      { label: 'New model', value: {} },
+      {
+        label: 'New model',
+        value: {},
+      },
     ],
     schema: {},
     form: [],
@@ -46,14 +38,14 @@ class App extends React.Component {
     error: false,
     showExample: false,
     anchor: null,
-  };
+  });
 
-  setStateDefault = () => this.setState({ model: this.tempModel });
+  const setStateDefault = () => setState({ model: tempModel });
 
-  onSelectChange = ({ target: { value } }) => {
+  const onSelectChange = ({ target: { value } }) => {
     const { form, schema, model } = value;
 
-    this.setState({
+    setState({
       schemaJson: JSON.stringify(schema, undefined, 2),
       selected: value,
       schema,
@@ -63,16 +55,18 @@ class App extends React.Component {
     });
   };
 
-  onModelChange = (key, val, type) => {
-    const { model } = this.state;
+  const onModelChange = (key, val, type) => {
+    const { model } = state;
     const newModel = model;
     utils.selectOrSet(key, newModel, val, type);
-    this.setState({ model: newModel });
+    setState({ model: newModel });
   };
 
-  onValidate = () => {
+  const onValidate = (schemaJson) => {
     try {
-      const schema = JSON.parse(this.state.schemaJson);
+      console.log('params');
+      return;
+      const schema = JSON.parse(state.schemaJson);
 
       if (!schema.type) {
         return toastError('Attribute "type" not found. 🥺');
@@ -86,167 +80,168 @@ class App extends React.Component {
         return toastError('Attribute "properties" not found. 🥺');
       }
 
-      this.createModel();
+      createModel();
     } catch (e) {
-      console.log(e);
+      console.log('error', e);
       toastError('Invalid Schema 🥺');
     }
   };
 
-  onFormChange = (val) => {};
+  const onFormChange = (val) => {};
 
-  onSchemaChange = (val) => {
+  const onSchemaChange = (val) => {
     try {
       const schema = JSON.parse(val);
-      if (schema.schema) this.setState({ schemaJson: val, schema });
+      if (schema.schema) setState({ schemaJson: val, schema });
     } catch (e) {
-      console.error(e);
+      console.log('erro', val);
     }
   };
 
-  createModel = async () => {
+  const createModel = async () => {
     try {
-      await api.post('generators', this.state.schema);
+      await api.post('generators', state.schema);
 
       toastSuccess('Model created with success. 🥳');
     } catch (e) {
-      toastError('Try again. 🥺');
+      toastError('Model already exists. 🥺');
     }
   };
 
-  toggleExample = () => {
-    this.setState({ showExample: !this.state.showExample });
+  const toggleExample = () => {
+    setState({
+      showExample: !state.showExample,
+    });
   };
 
-  render() {
-    const {
-      schema,
-      form,
-      model,
-      selected,
-      tests,
-      schemaJson,
-      localization,
-      showErrors,
+  const {
+    schema,
+    form,
+    model,
+    selected,
+    tests,
+    schemaJson,
+    localization,
+    showErrors,
 
-      showExample,
-    } = this.state;
+    showExample,
+  } = state;
 
-    let schemaForm = '';
-    if (form?.length > 0) {
-      schemaForm = (
-        <ErrorBoundary>
-          <SchemaForm
-            schema={schema}
-            form={form}
-            onModelChange={this.onModelChange}
-            model={model}
-            localization={localization}
-            showErrors={showErrors}
-          />
-        </ErrorBoundary>
-      );
-    }
-
-    return (
-      <div className="col-md-12">
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <h1>JSON Schema Editor</h1>
-          <Button
-            variant="contained"
-            color={showExample ? 'secondary' : 'primary'}
-            style={{ marginTop: 10, marginLeft: 'auto' }}
-            onClick={this.toggleExample}
-          >
-            {showExample ? 'HIDE EXAMPLE' : 'SHOW EXAMPLE'}
-          </Button>
-        </div>
-        <div className="row">
-          <div className="col-sm-9">
-            <h3>Schema</h3>
-            <AceEditor
-              mode="json"
-              theme="dracula"
-              height={window.innerHeight - 140}
-              width="100%"
-              style={{ flexGrow: 1 }}
-              onChange={this.onSchemaChange}
-              name="aceSchema"
-              value={schemaJson}
-              editorProps={{ $blockScrolling: true }}
-            />
-          </div>
-          <div
-            className="col-sm-3"
-            style={{
-              height: window.innerHeight - 64,
-              justifyContent: 'space-between',
-              display: 'flex',
-              flexDirection: 'column',
-              overflowY: 'scroll',
-            }}
-          >
-            <div>
-              <h3>Models</h3>
-              <FormControl
-                classes={{ root: 'form-group' }}
-                style={{ minWidth: 150, flex: 1, display: 'flex' }}
-              >
-                <InputLabel htmlFor="select-test">Select Model</InputLabel>
-                <Select
-                  autoWidth
-                  name="selectTest"
-                  inputProps={{
-                    name: 'selectTest',
-                    id: 'select-test',
-                  }}
-                  value={selected}
-                  onChange={this.onSelectChange}
-                >
-                  {tests.map(({ label, value }) => (
-                    <MenuItem key={value} value={value}>
-                      {label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              {schemaForm && <h3>The Generated Form</h3>}
-              {schemaForm}
-            </div>
-
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ marginTop: 'auto', width: '100%', marginBottom: 20 }}
-              onClick={this.onValidate}
-            >
-              CREATE MODEL
-            </Button>
-          </div>
-        </div>
-        <React.Fragment>
-          <Drawer anchor="bottom" open={showExample} variant="persistent">
-            <AceEditor
-              mode="json"
-              theme="dracula"
-              height={window.innerHeight / 2.5}
-              width="100%"
-              readOnly={true}
-              style={{ flexGrow: 1, width: window.innerWidth }}
-              name="aceSchema"
-              value={JSON.stringify(
-                require('./data/song.json').schema,
-                undefined,
-                2
-              )}
-              editorProps={{ $blockScrolling: true }}
-            />
-          </Drawer>
-        </React.Fragment>
-      </div>
+  let schemaForm = '';
+  if (form?.length > 0) {
+    schemaForm = (
+      <ErrorBoundary>
+        <SchemaForm
+          schema={schema}
+          form={form}
+          onModelChange={onModelChange}
+          model={model}
+          localization={localization}
+          showErrors={showErrors}
+        />
+      </ErrorBoundary>
     );
   }
-}
 
-export default App;
+  return (
+    <div className="col-md-12">
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <h1>JSON Schema Editor</h1>
+        <Button
+          variant="contained"
+          color={showExample ? 'secondary' : 'primary'}
+          style={{ marginTop: 10, marginLeft: 'auto' }}
+          onClick={toggleExample}
+        >
+          {showExample ? 'HIDE EXAMPLE' : 'SHOW EXAMPLE'}
+        </Button>
+      </div>
+      <div className="row">
+        <div className="col-sm-9">
+          <h3>Schema</h3>
+          <AceEditor
+            mode="json"
+            theme="dracula"
+            height={window.innerHeight - 140}
+            width="100%"
+            style={{ flexGrow: 1 }}
+            onChange={onSchemaChange}
+            name="aceSchema"
+            value={schemaJson}
+            editorProps={{ $blockScrolling: true }}
+          />
+        </div>
+        <div
+          className="col-sm-3"
+          style={{
+            height: window.innerHeight - 64,
+            justifyContent: 'space-between',
+            display: 'flex',
+            flexDirection: 'column',
+            overflowY: 'scroll',
+          }}
+        >
+          <div>
+            <h3>Models</h3>
+            <FormControl
+              classes={{ root: 'form-group' }}
+              style={{ minWidth: 150, flex: 1, display: 'flex' }}
+            >
+              <InputLabel htmlFor="select-test">Select Model</InputLabel>
+              <Select
+                autoWidth
+                name="selectTest"
+                inputProps={{
+                  name: 'selectTest',
+                  id: 'select-test',
+                }}
+                value={selected}
+                onChange={onSelectChange}
+              >
+                {tests.map(({ label, value }) => (
+                  <MenuItem key={value} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            {schemaForm && <h3>The Generated Form</h3>}
+            {schemaForm}
+          </div>
+
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ marginTop: 'auto', width: '100%', marginBottom: 20 }}
+            onClick={() => {
+              console.log('xxxa', schemaJson);
+              // onValidate(schemaJson);
+            }}
+          >
+            CREATE MODEL
+          </Button>
+        </div>
+      </div>
+      <React.Fragment>
+        <Drawer anchor="bottom" open={showExample} onClose={toggleExample}>
+          <AceEditor
+            mode="json"
+            theme="dracula"
+            height={window.innerHeight / 1.5}
+            width="100%"
+            readOnly={true}
+            style={{ flexGrow: 1, width: window.innerWidth }}
+            name="aceSchema"
+            value={JSON.stringify(
+              require('./data/song.json').schema,
+              undefined,
+              2
+            )}
+            editorProps={{ $blockScrolling: true }}
+          />
+        </Drawer>
+      </React.Fragment>
+    </div>
+  );
+};
