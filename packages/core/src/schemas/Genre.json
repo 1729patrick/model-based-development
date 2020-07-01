@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "title": "Genre",
+  "properties": {
+    "name": {
+      "type": "string",
+      "maxLength": 75
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "title": "Album",
+  "properties": {
+    "name": {
+      "type": "string",
+      "maxLength": 75
+    },
+    "released": {
+      "type": "date"
+    },
+    "author": {
+      "type": "aa"
+    }
+  },
+  "required": [
+    "name",
+    "released"
+  ]
+}
