@@ -74,21 +74,22 @@ class App extends React.Component {
     try {
       const schema = JSON.parse(this.state.schemaJson);
 
-      if (!schema.schema.type) {
-        return toastError('Attribute "schema.type" not found. 🥺');
+      if (!schema.type) {
+        return toastError('Attribute "type" not found. 🥺');
       }
 
-      if (!schema.schema.title) {
-        return toastError('Attribute "schema.title" not found. 🥺');
+      if (!schema.title) {
+        return toastError('Attribute "title" not found. 🥺');
       }
 
-      if (!schema.schema.properties) {
-        return toastError('Attribute "schema.properties" not found. 🥺');
+      if (!schema.properties) {
+        return toastError('Attribute "properties" not found. 🥺');
       }
 
       this.createModel();
     } catch (e) {
-      toastError('Attribute "schema" not found. 🥺');
+      console.log(e);
+      toastError('Invalid Schema 🥺');
     }
   };
 
@@ -97,7 +98,7 @@ class App extends React.Component {
   onSchemaChange = (val) => {
     try {
       const schema = JSON.parse(val);
-      this.setState({ schemaJson: val, schema });
+      if (schema.schema) this.setState({ schemaJson: val, schema });
     } catch (e) {
       console.error(e);
     }
@@ -234,7 +235,11 @@ class App extends React.Component {
               readOnly={true}
               style={{ flexGrow: 1, width: window.innerWidth }}
               name="aceSchema"
-              value={JSON.stringify(require('./data/song.json'), undefined, 2)}
+              value={JSON.stringify(
+                require('./data/song.json').schema,
+                undefined,
+                2
+              )}
               editorProps={{ $blockScrolling: true }}
             />
           </Drawer>
