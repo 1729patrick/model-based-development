@@ -213,7 +213,7 @@ export default () => {
             variant="contained"
             color={error ? 'secondary' : 'primary'}
             style={{ marginTop: 'auto', width: '100%', marginBottom: 20 }}
-            onClick={onValidate}
+            onClick={error ? () => {} : onValidate}
           >
             {error ? 'SCHEMA INVALID' : 'CREATE MODE'}
           </Button>
