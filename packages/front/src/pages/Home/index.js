@@ -25,7 +25,7 @@ function Home() {
 
       const dataFormatted = results.map(({ data, config }) => {
         const name = config.url.replace('/', '');
-        return { name, Rows: data[name.toLowerCase()].length };
+        return { name, Rows: data[name.toLowerCase()]?.length || 0 };
       });
 
       setBarChartData(dataFormatted);
