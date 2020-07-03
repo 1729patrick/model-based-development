@@ -68,6 +68,7 @@ export default () => {
     try {
       const schema = JSON.parse(state.schemaJson);
 
+      
       if (!schema.type) {
         return toastError('Attribute "type" not found. 🥺');
       }
@@ -86,11 +87,11 @@ export default () => {
     }
   };
 
-  const onFormChange = (val) => {};
-
   const onSchemaChange = (val) => {
     try {
       const schema = JSON.parse(val);
+      if(!schema.type) return;
+
       setState({ ...state, schemaJson: val, schema });
       setError(false);
     } catch (e) {
