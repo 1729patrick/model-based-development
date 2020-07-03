@@ -40,10 +40,12 @@ class Model {
 
     const [tableInsertedId] = await this.table.insert(model).returning('id');
 
-    relations.forEach(async ({ column, tableName }) => {
-      await database(tableName).insert({
-        [column]: this.model[column],
-        [this.tableNameId]: tableInsertedId,
+    relations.forEach(({ column, tableName }) => {
+      this.model[column].forEach(async value => {
+        await database(tableName).insert({
+          [column]: value,
+          [this.tableNameId]: tableInsertedId,
+        });
       });
     });
 
@@ -61,11 +63,13 @@ class Model {
     const { model, relations } = await this.getMetadata(newModel);
 
     relations.forEach(async ({ column, tableName }) => {
-      await database(tableName)
-        .update({
-          [column]: newModel[column],
-        })
-        .where({ [this.tableNameId]: id });
+      newModel[column].forEach(async value => {
+        await database(tableName)
+          .update({
+            [column]: value,
+          })
+          .where({ [this.tableNameId]: id });
+      });
     });
 
     return this.table.update(model).where({ id });

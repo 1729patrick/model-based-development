@@ -3,24 +3,69 @@ import MaterialTable from 'material-table';
 
 import api from '../../services/api';
 import { toastSuccess, toastError } from '../../services/toast';
+import Checkbox from '../../components/Checkbox';
 
 const {{name}}s = () => {
   const [{{model}}s, set{{name}}s] = useState({});
 
-  const getColumns = columns => {
-    return columns.map(({ field, type }) => {
-      const title = field.replace(/_/g, ' ');
+  const getLookUp = async model => {
+    const { data } = await api.get(${'`/${model}s`'});
+
+    return new Promise(resolve => {
+      resolve(
+        data[${'`${model}s`'}].reduce((acc, model) => {
+          acc[model.id] = model.name;
+
+          return acc;
+        }, {})
+      );
+    });
+  };
+  
+
+  const getColumns = async columns => {
+    let cols = [];
+
+    for (const { field, type } of columns) {
+      const title = field.split('_')[0];
       const editable = field === 'id' ? 'never' : 'always';
 
-      return { field, title, editable, type };
-    });
+    
+      const isModel = field.split('_').length === 2;
+      if (isModel) {
+        const lookup = await getLookUp(title);
+
+        let column = {
+          field,
+          title,
+          editable,
+          type,
+        };
+
+        if (type === 'checkbox') {
+          column = {
+            ...column,
+            editComponent: props => <Checkbox {...props} items={lookup} />,
+            render: rowData => rowData[field].map(id => lookup[id]).join(', '),
+          };
+        } else {
+          column = { ...column, lookup };
+        }
+
+        cols.push(column);
+      } else {
+        cols.push({ field, title, editable, type });
+      }
+    }
+
+    return cols;
   };
 
   useEffect(() => {
     const fetch{{name}}s = async () => {
       const { data } = await api.get('/{{model}}s');
 
-      set{{name}}s({ columns: getColumns(data.columns), data: data.{{model}}s });
+      set{{name}}s({ columns: await getColumns(data.columns), data: data.{{model}}s });
     };
 
     fetch{{name}}s();
