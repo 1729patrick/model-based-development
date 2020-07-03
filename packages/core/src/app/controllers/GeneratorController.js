@@ -7,6 +7,7 @@ import ViewService from '../services/ViewService';
 import { resolve } from 'path';
 
 import fs from 'fs';
+import HomeService from '../services/HomeService';
 
 class GeneratorController {
   async store(req, res) {
@@ -31,6 +32,7 @@ class GeneratorController {
       ControllerService.run({ args }),
       RouterService.run({ args }),
       ViewService.run({ args }),
+      HomeService.run({ args }),
     ]);
 
     fs.writeFileSync(schemaPath, JSON.stringify(req.body, undefined, '  '));
