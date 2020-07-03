@@ -8,8 +8,7 @@ class {{name}} extends Model {
   }
 
   get columns() {
-    return [
-      { field: 'id', type: 'numeric' },${getPropertiesColumns(args)}
+    return [${getPropertiesColumns(args)}
     ];
   }
 ${getFindAllRelations(args)}}
@@ -48,7 +47,9 @@ const getPropertiesColumns = ({ properties, references = [] }) => {
   for (const reference of references) {
     const tableName = `${reference.model.toLowerCase()}_id`;
 
-    propertiesFormatted += `\n\t\t\t{ field: '${tableName}', type: 'numeric' },`;
+    propertiesFormatted += `\n\t\t\t{ field: '${tableName}', type: ${
+      reference.relation === 'M-1' ? '"select"' : '"checkbox"'
+    } },`;
   }
 
   return propertiesFormatted;
@@ -68,12 +69,56 @@ const getFindAllRelations = ({ references, name, model }) => {
     }
   });
 
+  const mmRelation = references.filter(({ relation }) => relation === 'M-M');
+
+  const getGroupRelationsMM = () => {
+    let consts = `const ${model}s = {};`;
+    let checkExists = ``;
+    let references = `${model}s[${model}.${model}_id] = { ...${model}, id: ${model}.${model}_id };`;
+    let returnReferences = ``;
+
+    const referencesName = mmRelation.map(
+      ({ model }) => `${model.toLowerCase()}_id`
+    );
+
+    referencesName.forEach(modelRef => {
+      consts += `\n\t\t\tconst ${modelRef} = {};`;
+
+      checkExists += `\t\t\t\tif (!${modelRef}[${model}.${model}_id]) {
+          ${modelRef}[${model}.${model}_id] = new Set();
+        }\n\n`;
+
+      references += `\n\t\t\t\t${modelRef}[${model}.${model}_id].add(${model}.${modelRef});`;
+      returnReferences += `\n\t\t\t\t\t${modelRef}: [...${modelRef}[id]],`;
+    });
+
+    return `
+      ${consts}
+      
+      results.forEach(${model} => {
+${checkExists}
+        ${references}
+      });
+
+      return Object.entries(${model}s).map(([id, ${model}]) => {
+        const { ${model}_id, ...withoutId } = ${model};
+
+        return {
+          ...withoutId,${returnReferences}
+        };
+      });
+    `;
+  };
+
   return `
   findAll() {
-    let join = (database, tableName) =>
-      database
+    let join = async (database, tableName) => {
+      const results = await database
         .select(${projection}])
         .from(tableName)${fns};
+
+        ${mmRelation.length ? getGroupRelationsMM() : `return results;`}
+    }
 
     return super.findAll(join);
   }\n`;
