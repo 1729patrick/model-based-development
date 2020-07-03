@@ -15,7 +15,7 @@ class HomeService {
 
     const appRoutesWithExport = modelsIndented.replace(
       '];',
-      `"\t${args.name}",
+      `"\t${args.name}s",
 ];`
     );
 
