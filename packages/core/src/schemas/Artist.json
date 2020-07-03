@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "title": "Artist",
+  "properties": {
+    "name": {
+      "type": "string",
+      "maxLength": 75
+    },
+    "date_of_birth": {
+      "type": "date"
+    },
+    "nacionality": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "date_of_birth",
+    "nacionality",
+    "description"
+  ]
+}
