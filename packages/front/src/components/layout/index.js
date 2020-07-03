@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 
 import IconButton from '@material-ui/core/IconButton';
 import Links from './Links';
+import { NavLink } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,15 +32,17 @@ export default function Layout({ children }) {
       <div className={classes.root}>
         <AppBar position="fixed">
           <Toolbar>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="menu"
-            ></IconButton>
-            <Typography variant="h6" className={classes.title}>
-              Musics
-            </Typography>
+            <div
+              style={{
+                flex: 1,
+              }}
+            >
+              <NavLink to="/">
+                <Typography variant="h6" className={classes.title}>
+                  Musics
+                </Typography>
+              </NavLink>
+            </div>
             <Links />
           </Toolbar>
         </AppBar>
