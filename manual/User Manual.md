@@ -84,3 +84,15 @@ O checkbox é usado para mutiplas seleções. Propriamente em relações M-M.
 O calendário é usado para selecionar as datas.
 
 # <center>![alt text](./images/front/9.png)</center>
+
+Por meio da tabela, é possivel ordenar os registros de forma crescente ou decrescente. Para isso, basta clicar na seta ao lado do nome da coluna.
+
+# <center>![alt text](./images/front/10.png)</center>
+
+Ao digitar algo no input ``Search`, acontece um filtro e apenas os registros que coincidem com o termo buscado são exibidos.
+
+# <center>![alt text](./images/front/11.png)</center>
+
+Caso exista muitos registros, é feito uma paginação para exibir 5, 10 ou 20 linhas.
+
+# <center>![alt text](./images/front/12.png)</center>
