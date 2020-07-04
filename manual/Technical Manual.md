@@ -1,8 +1,6 @@
 # <center>Manual Técnico</center>
 
-# <center>![alt text](./logo.png)</center>
-
----
+# <center>![alt text](./images/logo.png)</center>
 
 ##### Curso:
 
@@ -14,14 +12,14 @@ Desenvolvimento Baseado em Modelos
 
 ##### Docentes:
 
-Prof. Joaquim Filipe
-Eng. Filipe Mariano
+- Prof. Joaquim Filipe
+- Eng. Filipe Mariano
 
 ##### Estudantes:
 
-Patrick Forsthofer - 190200007
-Tiago Neto - 160221086
-Tomás Santos - 160221032
+- Patrick Forsthofer - 190200007
+- Tiago Neto - 160221086
+- Tomás Santos - 160221032
 
 ---
 
@@ -77,19 +75,19 @@ Arquitetura detalhada:
         server.js
 ```
 
-<b>GeneratorController.js:</b> Código responsável por invocar todos os services.
-<b>ControllerService.js:</b> Gera o código para um controller.
-<b>DatabaseService.js:</b> Cria as tabelas, colunas e relações na base de dados.
-<b>HomeService.js:</b> Adiciona no arquivo `front/src/pages/Home/models.js` o nome do model.
-<b>RouterService.js:</b> Gera o código para o roteamento do express.
-<b>controller.js:</b> Template do controller.
-<b>model.js:</b> Template do model.
-<b>router.js:</b> Template do roteamento express.
-<b>view.js:</b> Template da página do `front`
-<b>path.js</b> Código relacionado com os diretórios dos componentes gerados.
-<b>ViewService.js:</b> Gera o código para a página do frontend.
-<b>app.js:</b> Inicializa o database e as rotas do express.
-<b>server.js:</b> Inicia o servidor express.
+- <b>GeneratorController.js:</b> Código responsável por invocar todos os services.
+- <b>ControllerService.js:</b> Gera o código para um controller.
+- <b>DatabaseService.js:</b> Cria as tabelas, colunas e relações na base de dados.
+- <b>HomeService.js:</b> Adiciona no arquivo `front/src/pages/Home/models.js` o nome do model.
+- <b>RouterService.js:</b> Gera o código para o roteamento do express.
+- <b>controller.js:</b> Template do controller.
+- <b>model.js:</b> Template do model.
+- <b>router.js:</b> Template do roteamento express.
+- <b>view.js:</b> Template da página do `front`
+- <b>path.js</b> Código relacionado com os diretórios dos componentes gerados.
+- <b>ViewService.js:</b> Gera o código para a página do frontend.
+- <b>app.js:</b> Inicializa o database e as rotas do express.
+- <b>server.js:</b> Inicia o servidor express.
 
 `packages/editor` é um projeto em React.JS, onde está implementado o editor de código.
 
@@ -108,9 +106,9 @@ Arquitetura detalhada:
         App.js
 ```
 
-<b>data:</b> O diretório onde ficam os JSON Schemas.
-<b>api.js:</b> Código responsável por configurar o endpoint para a conexâo com o GeneratorController do `core`
-<b>App.js:</b> O editor de código.
+- <b>data:</b> O diretório onde ficam os JSON Schemas.
+- <b>api.js:</b> Código responsável por configurar o endpoint para a conexâo com o GeneratorController do `core`
+- <b>App.js:</b> O editor de código.
 
 `packages/front` é outro projeto em React.JS, onde está implementado o frontoffice e backoffice.
 
@@ -135,11 +133,11 @@ Arquitetura detalhada:
           api.js
 ```
 
-<b>layout:</b> O diretório relacionado com o header das páginas.
-<b>Checkbox.js:</b> A interface para relacionar models quando existe relações M-M.
-<b>Home:</b> Código relacionado com o frontoffice.
-<b>routes:</b> Código referente ao roteamento de páginas.
-<b>api.js:</b> Código responsável por configurar o endpoint para a conexâo com os endpoints do `core`
+- <b>layout:</b> O diretório relacionado com o header das páginas.
+- <b>Checkbox.js:</b> A interface para relacionar models quando existe relações M-M.
+- <b>Home:</b> Código relacionado com o frontoffice.
+- <b>routes:</b> Código referente ao roteamento de páginas.
+- <b>api.js:</b> Código responsável por configurar o endpoint para a conexâo com os endpoints do `core`
 
 ## 2. Especificação dos diversos componentes do projeto (geradores) e integração dos mesmos.
 
@@ -1124,9 +1122,9 @@ Referente as opções tomadas na API, optamos por criar o projeto utilizando as 
 
 Decidimos criar um editor de JSON Schema, em vez de uma interface com drag-and-drop. Percebemos que assim oferecemos maior liberdade para que o usuário consiga criar os modelos como preferir, além do que, a velocidade de criar os modelos é mais rápida atráves do editor do que no drag-and-drop. Para evitar que o usuário envie Schemas inválidos para o gerador, adicionamos algumas verificações. Por exemplo: não é sequer posssível enviar o Schema antes de ser válido, e também não é posssível enviar se não existem as propriedades: `type`, `title` e `properties`.
 
-Como citado anteriormente, utilizamos a biblioteca `material-table`, essa foi escolhida porque já possuia uma interce para a editar, criar e deletar um registro, além disso, ela possui algumas funcionalidades referente a páginação, ordenação e filtro de registros.
+Como citado anteriormente, utilizamos a biblioteca `material-table`, essa foi escolhida porque já possuia uma interface para a editar, criar e deletar um registro, além disso, ela possui algumas funcionalidades referente a páginação, ordenação e filtro de registros.
 
-Decimos por utilizar React.JS no editor e no front, isso porque consideramos que poderiamos usar o gerador em outros projetos, e assim, seria obrigatório que esse sistema possua alguma tecnologia recente no frontend.
+Decidimos por utilizar React.JS no editor e no front, isso porque consideramos que poderiamos usar o gerador em outros projetos, e assim, seria obrigatório que esse sistema possua alguma tecnologia recente no frontend.
 
 Limitações identificadas:
 
@@ -1139,7 +1137,7 @@ Limitações identificadas:
 
 Os modelos criados inicialmente estão de acordo com o diagrama relacional a seguir:
 
-# <center>![alt text](./er.png)</center>
+# <center>![alt text](./images/er.png)</center>
 
 Criamos uma tabela principal, `Song`, nela que criamos as músicas, essa música estará em um album, poderá possuir 1 ou muitos genêros e ser de 1 ou muitos artistas.
 
